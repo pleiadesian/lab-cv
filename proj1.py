@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import cv2
 import numpy as np
-import math
 
 '''
-# @Author  : wzl      
-# @ID      : F1710w0249
-# @File    : convolution.py
+# @Author   : wzl
+# @ID       : 517021910653
+# @File     : proj1.py
 '''
 
 
@@ -72,7 +71,7 @@ def median_filter(image, kernel):
     return image_filter
 
 
-# Gaussian filter
+# Gaussian matrix generator
 def gaussian_mat(sigma):
     img_h = img_w = 2 * sigma + 1
     mat = np.zeros((img_h, img_w))
