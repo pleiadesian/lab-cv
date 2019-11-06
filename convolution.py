@@ -39,28 +39,47 @@ def img_convolve(image, kernel):
     return image_convolve
 
 
-# 均值滤波
-# def imgAverageFilter(image, kernel):
-#     '''
-#     :param image: 图片矩阵
-#     :param kernel: 滤波窗口
-#     :return:均值滤波后的矩阵
-#     '''
-#     return imgConvolve(image, kernel) * (1.0 / kernel.size)
+# main filter
+def main_filter(image, kernel):
+    return img_convolve(image, kernel) * (1.0 / kernel.size)
 
 
-# 高斯滤波
-# def imgGaussian(sigma):
-#     '''
-#     :param sigma: σ标准差
-#     :return: 高斯滤波器的模板
-#     '''
-#     img_h = img_w = 2 * sigma + 1
-#     gaussian_mat = np.zeros((img_h, img_w))
-#     for x in range(-sigma, sigma + 1):
-#         for y in range(-sigma, sigma + 1):
-#             gaussian_mat[x + sigma][y + sigma] = np.exp(-0.5 * (x ** 2 + y ** 2) / (sigma ** 2))
-#     return gaussian_mat
+# median filter
+def median_filter(image, kernel):
+    img_h = int(image.shape[0])
+    img_w = int(image.shape[1])
+    kernel_h = int(kernel.shape[0])
+    kernel_w = int(kernel.shape[1])
+    padding_h = int((kernel_h - 1) / 2)
+    padding_w = int((kernel_w - 1) / 2)
+
+    # convolution window size
+    convolve_h = int(img_h + 2 * padding_h)
+    convolve_w = int(img_w + 2 * padding_w)
+
+    # padding image for edge
+    img_padding = np.zeros((convolve_h, convolve_w))
+    img_padding[padding_h:padding_h + img_h, padding_w:padding_w + img_w] = image[:, :]
+
+    # output image after filter
+    image_filter = np.zeros(image.shape)
+
+    # convolution
+    for i in range(padding_h, padding_h + img_h):
+        for j in range(padding_w, padding_w + img_w):
+            image_filter[i - padding_h][j - padding_w] = int(np.median(img_padding[i - padding_h:i + padding_h + 1,
+                                                                      j - padding_w:j + padding_w + 1] * kernel))
+    return image_filter
+
+
+# Gaussian filter
+def gaussian_mat(sigma):
+    img_h = img_w = 2 * sigma + 1
+    mat = np.zeros((img_h, img_w))
+    for x in range(-sigma, sigma + 1):
+        for y in range(-sigma, sigma + 1):
+            mat[x + sigma][y + sigma] = np.exp(-0.5 * (x ** 2 + y ** 2) / (sigma ** 2))
+    return mat
 
 
 # robert operation
@@ -94,10 +113,8 @@ def prewitt_edge(image, prewitt_x, prewitt_y):
     return img_prediction
 
 
-# # 滤波3x3
-# kernel_3x3 = np.ones((3, 3))
-# # 滤波5x5
-# kernel_5x5 = np.ones((5, 5))
+kernel_3 = np.ones((3, 3))
+kernel_5 = np.ones((5, 5))
 
 # Roberts operator
 roberts_oper = np.array([[-1, -1],
@@ -121,41 +138,45 @@ prewitt_y = np.array([[-1, -1, -1],
                       [0, 0, 0],
                       [1, 1, 1]])
 
-# # ######################均值滤波################################
-# # 读图片
-# image = cv2.imread('balloonGrayNoisy.jpg', cv2.IMREAD_GRAYSCALE)
-# # 均值滤波
-# img_k3 = imgAverageFilter(image, kernel_3x3)
-#
-# # 写图片
-# cv2.imwrite('average_3x3.jpg', img_k3)
-# # 均值滤波
-# img_k5 = imgAverageFilter(image, kernel_5x5)
-# # 写图片
-# cv2.imwrite('average_5x5.jpg', img_k5)
-
-# ######################高斯滤波################################
-# image = cv2.imread('balloonGrayNoisy.jpg', cv2.IMREAD_GRAYSCALE)
-# img_gaus1 = imgAverageFilter(image, imgGaussian(1))
-# cv2.imwrite('gaussian1.jpg', img_gaus1)
-# img_gaus2 = imgAverageFilter(image, imgGaussian(2))
-# cv2.imwrite('gaussian2.jpg', img_gaus2)
-# img_gaus3 = imgAverageFilter(image, imgGaussian(3))
-# cv2.imwrite('gaussian3.jpg', img_gaus3)
 
 image = cv2.imread('test.jpg', cv2.IMREAD_GRAYSCALE)
 cv2.imwrite('gray.jpg', image)
 
+# filters
+
+# main filter
+img_main_3 = main_filter(image, kernel_3)
+cv2.imwrite('main_3x3.jpg', img_main_3)
+img_main_5 = main_filter(image, kernel_5)
+cv2.imwrite('main_5x5.jpg', img_main_5)
+
+# median filter
+img_median_3 = main_filter(image, kernel_3)
+cv2.imwrite('median_3x3.jpg', img_median_3)
+img_median_5 = main_filter(image, kernel_5)
+cv2.imwrite('median_5x5.jpg', img_median_5)
+
+# Gaussian filter
+img_gaussian_1 = main_filter(image, gaussian_mat(1))
+cv2.imwrite('gaussian1.jpg', img_gaussian_1)
+img_gaussian_2 = main_filter(image, gaussian_mat(2))
+cv2.imwrite('gaussian2.jpg', img_gaussian_2)
+img_gaussian_3 = main_filter(image, gaussian_mat(3))
+cv2.imwrite('gaussian3.jpg', img_gaussian_3)
+
+
+# convolution operations
+
 # Roberts operation
 image_roberts = robert_edge(image, roberts_oper)
-cv2.imwrite('roberts.jpg', image_roberts)
+cv2.imwrite('roberts_edge.jpg', image_roberts)
 
 # Sobel operation
 img_sobel_x = sobel_edge(image, sobel_x)
-cv2.imwrite('sobel_x.jpg', img_sobel_x)
+cv2.imwrite('sobel_edge_x.jpg', img_sobel_x)
 img_sobel_y = sobel_edge(image, sobel_y)
-cv2.imwrite('sobel_y.jpg', img_sobel_y)
+cv2.imwrite('sobel_edge_y.jpg', img_sobel_y)
 
 # Prewitt operation
 img_prewitt = prewitt_edge(image, prewitt_x, prewitt_y)
-cv2.imwrite('prewitt.jpg', img_prewitt)
+cv2.imwrite('prewitt_edge.jpg', img_prewitt)
