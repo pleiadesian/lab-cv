@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import cv2
 import numpy as np
 from util import convolution as conv
 
