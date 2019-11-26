@@ -1,3 +1,8 @@
+"""
+@ File:     edgedetect.py
+@ Author:   pleiadesian
+@ Datetime: 2019-11-26 20:31
+"""
 import numpy as np
 
 
@@ -12,15 +17,15 @@ def gaussian_filter(image, sigma):
 def gradient(image):
     kernel_x = np.array([[-1, 0, 1],
                         [-2, 0, 2],
-                        [-1, 0, 1]], np.int32)
+                        [-1, 0, 1]], np.float32)
     kernel_y = np.array([[1, 2, 1],
                         [0, 0, 0],
-                        [-1, -2, -1]], np.int32)
+                        [-1, -2, -1]], np.float32)
 
     ix = img_convolve(image, kernel_x)
     iy = img_convolve(image, kernel_y)
 
-    magnitude = (ix ** 2 + iy ** 2) ** 0.5
+    magnitude = np.hypot(ix, iy)  # (ix ** 2 + iy ** 2) ** 0.5
     degree = np.arctan2(ix, iy)
     return magnitude, degree
 
@@ -28,27 +33,26 @@ def gradient(image):
 # non-maxima suppression
 def nonmax_suppress(image, degree):
     img_h, img_w = image.shape
-    image_supress = np.zeros((img_h, img_w), dtype=np.int32)
+    image_supress = np.zeros((img_h, img_w), dtype=np.float32)
 
     for i in range(img_h):
         for j in range(img_w):
-            if i - 1 < 0 or i + 1 == img_h or j - 1 < 0 or j + 1 == img_w:
-                image_supress[i, j] = 0
-                continue
-            angle = round_angle(degree[i, j])
-            if angle == 0:
-                if image[i, j] >= image[i, j - 1] and image[i, j] >= image[i, j + 1]:
-                    image_supress[i, j] = image[i, j]
-            elif angle == 90:
-                if (image[i, j] >= image[i - 1, j]) and (image[i, j] >= image[i + 1, j]):
-                    image_supress[i, j] = image[i, j]
-            elif angle == 135:
-                if (image[i, j] >= image[i - 1, j - 1]) and (image[i, j] >= image[i + 1, j + 1]):
-                    image_supress[i, j] = image[i, j]
-            elif angle == 45:
-                if (image[i, j] >= image[i - 1, j + 1]) and (image[i, j] >= image[i + 1, j - 1]):
-                    image_supress[i, j] = image[i, j]
+            if degree[i][j] < 0:
+                degree[i][j] += 360
 
+            if ((j + 1) < image_supress.shape[1]) and ((j - 1) >= 0) and ((i + 1) < image_supress.shape[0]) and ((i - 1) >= 0):
+                if (degree[i][j] >= 337.5 or degree[i][j] < 22.5) or (157.5 <= degree[i][j] < 202.5):
+                    if image[i][j] >= image[i][j + 1] and image[i][j] >= image[i][j - 1]:
+                        image_supress[i][j] = image[i][j]
+                if (22.5 <= degree[i][j] < 67.5) or (202.5 <= degree[i][j] < 247.5):
+                    if image[i][j] >= image[i - 1][j + 1] and image[i][j] >= image[i + 1][j - 1]:
+                        image_supress[i][j] = image[i][j]
+                if (67.5 <= degree[i][j] < 112.5) or (247.5 <= degree[i][j] < 292.5):
+                    if image[i][j] >= image[i - 1][j] and image[i][j] >= image[i + 1][j]:
+                        image_supress[i][j] = image[i][j]
+                if (112.5 <= degree[i][j] < 157.5) or (292.5 <= degree[i][j] < 337.5):
+                    if image[i][j] >= image[i - 1][j - 1] and image[i][j] >= image[i + 1][j + 1]:
+                        image_supress[i][j] = image[i][j]
     return image_supress
 
 
@@ -121,7 +125,7 @@ def gaussian_mat(sigma):
 
 def round_angle(degree):
     angle = np.rad2deg(degree) % 180
-    if 0 <= angle < 22.5 or 157.5 <= angle < 180:
+    if (0 <= angle < 22.5) or (157.5 <= angle < 180):
         angle = 0
     elif 22.5 <= angle < 67.5:
         angle = 45

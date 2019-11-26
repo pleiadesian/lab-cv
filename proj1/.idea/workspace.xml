@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="46ac25d4-7a3a-4ac3-bbdc-93cab3e02d8c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/proj1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../proj2/util/edgedetect.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../proj2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../proj2/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../proj2/App.py" beforeDir="false" afterPath="$PROJECT_DIR$/../proj2/App.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../proj2/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../proj2/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../proj2/main.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../proj2/main.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../proj2/util/edgedetect.py" beforeDir="false" afterPath="$PROJECT_DIR$/../proj2/util/edgedetect.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -106,6 +103,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">

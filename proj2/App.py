@@ -1,3 +1,8 @@
+"""
+@ File:     App.py
+@ Author:   pleiadesian
+@ Datetime: 2019-11-26 20:31
+"""
 import sys
 import cv2
 import main
