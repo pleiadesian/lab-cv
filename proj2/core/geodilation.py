@@ -17,12 +17,14 @@ def geodesic_dilation(marker, mask, kernel, n=3):
     :return: geodesic dilation graph
     """
     last_marker = marker
+    curr_marker = marker
     for N in range(n):
         curr_marker = bin_dilate(last_marker, kernel)
         curr_marker = intersect(curr_marker, mask)
         if not np.any(last_marker != curr_marker):
             return curr_marker
         last_marker = curr_marker
+    return curr_marker
 
 
 def bin_dilate(image, kernel):

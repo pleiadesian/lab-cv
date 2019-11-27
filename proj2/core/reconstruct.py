@@ -29,14 +29,15 @@ def grayscale_reconstruct(marker, mask, n=3, kernel=None, method=None):
         kernel = np.ones((3,3), np.float32)
 
     if method == ReconstructMethod.Erode:
-        func = np.maximum
+        restrict_mask = np.maximum
     elif method == ReconstructMethod.Dilate:
-        func = np.minimum
+        restrict_mask = np.minimum
     else:
         print("unsupported method for gray scale reconstruction")
         return marker
 
     last_marker = marker
+    curr_marker = marker
     for i in range(n):
         curr_marker = grayscale_oper(last_marker, kernel, method)
         curr_marker = restrict_mask(curr_marker, mask)
