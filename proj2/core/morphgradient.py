@@ -14,7 +14,7 @@ class GradientMethod(Enum):
     Internal = 2
 
 
-def morph_gradient(img, kernel, method=GradientMethod.Standard):
+def morph_gradient(img, kernel=np.ones((3, 3), np.float32), method=GradientMethod.Standard):
     """
     Morphological gradient
     :param img
