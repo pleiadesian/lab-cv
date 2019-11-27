@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="46ac25d4-7a3a-4ac3-bbdc-93cab3e02d8c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/util/convolution.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/convolution.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../proj2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../proj2/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../proj2/core/edgedetect.py" beforeDir="false" afterPath="$PROJECT_DIR$/../proj2/core/edgedetect.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../proj2/core/reconstruct.py" beforeDir="false" afterPath="$PROJECT_DIR$/../proj2/core/reconstruct.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

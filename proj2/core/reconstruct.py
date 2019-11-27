@@ -15,7 +15,35 @@ class ReconstructMethod(Enum):
     Close = 3
 
 
-def grayscale_reconstruct(marker, mask, n=3, kernel=None, method=None):
+def opening_by_reconstruct(img, kernel=None, n=10):
+    """
+    OBR
+    :param img
+    :param kernel
+    :param n: keep reconstructing n times at most
+    :return: image after opening by reconstruction
+    """
+    if kernel is None:
+        kernel = np.ones((3, 3), np.float32)
+    seed_img = grayscale_oper(img, kernel, ReconstructMethod.Open)
+    return grayscale_reconstruct(seed_img, img, n, kernel, ReconstructMethod.Dilate)
+
+
+def closing_by_reconstruct(img, kernel=None, n=10):
+    """
+    CBR
+    :param img
+    :param kernel
+    :param n: keep reconstructing n times at most
+    :return: image after closing by reconstruction
+    """
+    if kernel is None:
+        kernel = np.ones((3, 3), np.float32)
+    seed_img = grayscale_oper(img, kernel, ReconstructMethod.Close)
+    return grayscale_reconstruct(seed_img, img, n, kernel, ReconstructMethod.Erode)
+
+
+def grayscale_reconstruct(marker, mask, n, kernel, method=None):
     """
     gray scale reconstruction
     :param marker
@@ -25,9 +53,6 @@ def grayscale_reconstruct(marker, mask, n=3, kernel=None, method=None):
     :param method: opening operation or closing operation
     :return: image after gray scale reconstruction
     """
-    if kernel is None:
-        kernel = np.ones((3,3), np.float32)
-
     if method == ReconstructMethod.Erode:
         restrict_mask = np.maximum
     elif method == ReconstructMethod.Dilate:
