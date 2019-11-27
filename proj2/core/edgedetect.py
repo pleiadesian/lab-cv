@@ -28,9 +28,9 @@ def gradient(image):
     kernel_x = np.array([[-1, 0, 1],
                         [-2, 0, 2],
                         [-1, 0, 1]], np.float32)
-    kernel_y = np.array([[1, 2, 1],
+    kernel_y = np.array([[-1, -2, -1],
                         [0, 0, 0],
-                        [-1, -2, -1]], np.float32)
+                        [1, 2, 1]], np.float32)
 
     ix = util.img_convolve(image, kernel_x)
     iy = util.img_convolve(image, kernel_y)

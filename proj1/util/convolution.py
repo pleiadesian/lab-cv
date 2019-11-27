@@ -4,6 +4,8 @@ import numpy as np
 
 # convolution
 def img_convolve(image, kernel):
+    kernel = np.rot90(kernel, 2)
+
     img_h = int(image.shape[0])
     img_w = int(image.shape[1])
     kernel_h = int(kernel.shape[0])
