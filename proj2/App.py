@@ -7,7 +7,7 @@ import sys
 import cv2
 import main
 import numpy as np
-from util import edgedetect
+from core import edgedetect
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsPixmapItem
 from PyQt5.QtGui import QImage, QPixmap
@@ -45,7 +45,7 @@ class PictureView(QMainWindow, main.Ui_MainWindow):
         y = int(img.shape[0] / 4) * 4
         img = cv2.resize(img, (x, y), interpolation=cv2.INTER_CUBIC)
         imageProc = ImageProc()
-        img = imageProc.edge_detection(img, np.int32(3), np.int32(20), np.int32(30), np.int32(50), np.int32(255))
+        img = imageProc.edge_detection(img, 3, 20, 30, 50, 255)
         img = img.astype(np.uint8)  # only uint8 is compatible with QImage
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.zoomscale = 1
