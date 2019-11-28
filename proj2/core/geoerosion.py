@@ -3,19 +3,25 @@
 @ Author:   pleiadesian
 @ Datetime: 2019-11-26 21:13
 """
+import cv2
 import numpy as np
 import core.util as util
 
 
-def geodesic_erosion(marker, mask, kernel, n=3):
+def geodesic_erosion(mask, kernel, n=3):
     """
     Conditional erosion in binary image
-    :param marker: marker graph
     :param mask: mask graph
     :param kernel: kernel for binary erosion
     :param n: repeat n times of erosion at most
     :return: geodesic erosion graph
     """
+    m = np.reshape(mask, [1, mask.shape[0] * mask.shape[1]])
+    mean = m.sum()/(mask.shape[0] * mask.shape[1])
+    ret, mask = cv2.threshold(mask, mean, 255, cv2.THRESH_BINARY)
+
+    marker = util.bin_dilate(mask, kernel)  # use dilated mask as marker
+
     last_marker = marker
     curr_marker = marker
     for N in range(n):

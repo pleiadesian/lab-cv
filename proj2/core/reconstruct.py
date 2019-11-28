@@ -15,7 +15,7 @@ class ReconstructMethod(Enum):
     Close = 3
 
 
-def opening_by_reconstruct(img, kernel=None, n=10):
+def opening_by_reconstruct(img, kernel=None, n=3):
     """
     OBR
     :param img
@@ -29,7 +29,7 @@ def opening_by_reconstruct(img, kernel=None, n=10):
     return grayscale_reconstruct(seed_img, img, n, kernel, ReconstructMethod.Dilate)
 
 
-def closing_by_reconstruct(img, kernel=None, n=10):
+def closing_by_reconstruct(img, kernel=None, n=3):
     """
     CBR
     :param img
