@@ -8,7 +8,7 @@ import cv2
 import main
 import ast
 import numpy as np
-from core import edgedetect, morphgradient
+from core import canny_edgedetect, morphgradient
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsPixmapItem, QFileDialog
 from PyQt5.QtGui import QImage, QPixmap
 
@@ -29,11 +29,11 @@ class ImageProc:
         :return: image after canny edge detection
         """
         img = image
-        img = edgedetect.gaussian_filter(img, sigma)
-        img, degree = edgedetect.gradient(img)
-        img = edgedetect.nonmax_suppress(img, degree)
-        img = edgedetect.threshold(img, low_thresh, high_thresh, weak_curve, strong_curve)
-        img = edgedetect.keep_contour(img, weak_curve, strong_curve)
+        img = canny_edgedetect.gaussian_filter(img, sigma)
+        img, degree = canny_edgedetect.gradient(img)
+        img = canny_edgedetect.nonmax_suppress(img, degree)
+        img = canny_edgedetect.threshold(img, low_thresh, high_thresh, weak_curve, strong_curve)
+        img = canny_edgedetect.keep_contour(img, weak_curve, strong_curve)
         return img
 
     @staticmethod

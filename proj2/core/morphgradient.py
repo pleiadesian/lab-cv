@@ -23,34 +23,8 @@ def morph_gradient(img, kernel=np.ones((3, 3), np.float32), method=GradientMetho
     :return: Morphological gradient for the image
     """
     if method == GradientMethod.Standard:
-        return (dilate(img, kernel) - erode(img, kernel)) / 2
+        return (util.gray_dilate(img, kernel) - util.gray_erode(img, kernel)) / 2
     elif method == GradientMethod.External:
-        return (dilate(img, kernel) - img) / 2
+        return (util.gray_dilate(img, kernel) - img) / 2
     else:
-        return (img - erode(img, kernel)) / 2
-
-
-def erode(img, kernel):
-    """
-    gray scale erosion
-    :param img
-    :param kernel
-    :return: image after gray scale erosion
-    """
-    kernel = np.rot90(kernel, 2)  # erosion kernel do not need rotation
-
-    def erode_conv(window, kernel_rot):
-        return (window - kernel_rot).min()
-    return util.img_convolve(img, kernel, erode_conv)
-
-
-def dilate(img, kernel):
-    """
-    gray scale dilation
-    :param img
-    :param kernel
-    :return: image after gray scale dilation
-    """
-    def dilate_conv(window, kernel_rot):
-        return (window + kernel_rot).max()
-    return util.img_convolve(img, kernel, dilate_conv)
+        return (img - util.gray_erode(img, kernel)) / 2

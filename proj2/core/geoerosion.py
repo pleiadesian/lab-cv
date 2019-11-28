@@ -19,26 +19,12 @@ def geodesic_erosion(marker, mask, kernel, n=3):
     last_marker = marker
     curr_marker = marker
     for N in range(n):
-        curr_marker = bin_erode(last_marker, kernel)
+        curr_marker = util.bin_erode(last_marker, kernel)
         curr_marker = union(curr_marker, mask)
         if not np.any(last_marker != curr_marker):
             return curr_marker
         last_marker = curr_marker
     return curr_marker
-
-
-def bin_erode(image, kernel):
-    """
-    binary dilation on image
-    :param image
-    :param kernel
-    :return: image after binary dilation
-    """
-    kernel = np.rot90(kernel, 2)  # erosion kernel do not need rotation
-
-    def bin_erode_conv(window, kernel_rot):
-        return window[kernel_rot != 0].min()
-    return util.img_convolve(image, kernel, bin_erode_conv)
 
 
 def union(img1, img2):

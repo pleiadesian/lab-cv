@@ -81,39 +81,13 @@ def grayscale_oper(img, kernel, method):
     :return: image after processing with kernel and method
     """
     if method == ReconstructMethod.Erode:
-        return erode(img, kernel)
+        return util.gray_erode(img, kernel)
     elif method == ReconstructMethod.Dilate:
-        return dilate(img, kernel)
+        return util.gray_dilate(img, kernel)
     elif method == ReconstructMethod.Open:
-        return dilate(erode(img, kernel), kernel)
+        return util.gray_dilate(util.gray_erode(img, kernel), kernel)
     elif method == ReconstructMethod.Close:
-        return erode(dilate(img, kernel), kernel)
-
-
-def erode(img, kernel):
-    """
-    gray scale erosion
-    :param img
-    :param kernel
-    :return: image after gray scale erosion
-    """
-    kernel = np.rot90(kernel, 2)  # erosion kernel do not need rotation
-
-    def erode_conv(window, kernel_rot):
-        return (window - kernel_rot).min()
-    return util.img_convolve(img, kernel, erode_conv)
-
-
-def dilate(img, kernel):
-    """
-    gray scale dilation
-    :param img
-    :param kernel
-    :return: image after gray scale dilation
-    """
-    def dilate_conv(window, kernel_rot):
-        return (window + kernel_rot).max()
-    return util.img_convolve(img, kernel, dilate_conv)
+        return util.gray_erode(util.gray_dilate(img, kernel), kernel)
 
 
 

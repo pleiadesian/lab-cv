@@ -50,3 +50,55 @@ def img_convolve(image, kernel, conv_func=None):
                                                                          j - padding_w:j + padding_w + 1], kernel)
 
     return image_convolve
+
+
+def bin_dilate(image, kernel):
+    """
+    binary dilation on image
+    :param image
+    :param kernel
+    :return: image after binary dilation
+    """
+    def bin_dilate_conv(window, kernel_rot):
+        return window[kernel_rot != 0].max()
+    return img_convolve(image, kernel, bin_dilate_conv)
+
+
+def bin_erode(image, kernel):
+    """
+    binary dilation on image
+    :param image
+    :param kernel
+    :return: image after binary dilation
+    """
+    kernel = np.rot90(kernel, 2)  # erosion kernel do not need rotation
+
+    def bin_erode_conv(window, kernel_rot):
+        return window[kernel_rot != 0].min()
+    return img_convolve(image, kernel, bin_erode_conv)
+
+
+def gray_dilate(img, kernel):
+    """
+    gray scale dilation
+    :param img
+    :param kernel
+    :return: image after gray scale dilation
+    """
+    def dilate_conv(window, kernel_rot):
+        return (window + kernel_rot).max()
+    return img_convolve(img, kernel, dilate_conv)
+
+
+def gray_erode(img, kernel):
+    """
+    gray scale erosion
+    :param img
+    :param kernel
+    :return: image after gray scale erosion
+    """
+    kernel = np.rot90(kernel, 2)  # erosion kernel do not need rotation
+
+    def erode_conv(window, kernel_rot):
+        return (window - kernel_rot).min()
+    return img_convolve(img, kernel, erode_conv)

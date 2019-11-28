@@ -16,27 +16,16 @@ def geodesic_dilation(marker, mask, kernel, n=3):
     :param n: repeat n times of dilation at most
     :return: geodesic dilation graph
     """
+
     last_marker = marker
     curr_marker = marker
     for N in range(n):
-        curr_marker = bin_dilate(last_marker, kernel)
+        curr_marker = util.bin_dilate(last_marker, kernel)
         curr_marker = intersect(curr_marker, mask)
         if not np.any(last_marker != curr_marker):
             return curr_marker
         last_marker = curr_marker
     return curr_marker
-
-
-def bin_dilate(image, kernel):
-    """
-    binary dilation on image
-    :param image
-    :param kernel
-    :return: image after binary dilation
-    """
-    def bin_dilate_conv(window, kernel_rot):
-        return window[kernel_rot != 0].max()
-    return util.img_convolve(image, kernel, bin_dilate_conv)
 
 
 def intersect(img1, img2):
